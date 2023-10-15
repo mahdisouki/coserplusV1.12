@@ -38,8 +38,8 @@ router.post("/login",async (req,res)=>{
 
   const user = await User.findOne({email})
   if(!user) return res.status(400).json({msg :'user does not exist.'})
-  // const isMatch = await bcrypt.compare(password , user.password)
-  // if(!isMatch) return  res.status(400).json({msg :'Incorrect password'})
+  const isMatch = await bcrypt.compare(password , user.password)
+  if(!isMatch) return  res.status(400).json({msg :'Incorrect password'})
   const accesstoken = generateAccessToken({id : user._id})
   const refreshtoken = generateRefreshToken({id : user._id})
   res.cookie('refreshtoken' ,  refreshtoken, {
